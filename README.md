@@ -26,3 +26,10 @@ The tricky part is the greedy longest-match rule. `&not` is the legacy form of `
 - `decode(text: str) -> str` — decode all named references in the string.
 - `decode_one(text: str, pos: int = 0) -> tuple[str, int]` — decode a single reference at `pos`; returns `(decoded, consumed)` or `("", 0)`.
 - `NAMED_ENTITIES` — dict mapping accepted names to `(value, has_semicolon)` tuples.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
